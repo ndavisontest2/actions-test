@@ -15,10 +15,6 @@ jobs:
         with:
           node-version: v16.17.1
           cache: yarn
-      - name: bla
-        run: echo $SECRET | base64
-        env:
-          SECRET: ${{ secrets.AWS_REGION }}
       - name: setup AWS
         uses: aws-actions/configure-aws-credentials@v1
         with:
