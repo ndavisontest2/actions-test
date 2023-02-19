@@ -8,5 +8,9 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
+      - name: test
+        run: id
+        env:
+          MYSECRET: ${{ secrets.MY_SECRET }}
       - name: set $COMMIT_MSG
         run: echo "COMMIT_MSG=${{ github.event.head_commit.message || github.event.pull_request.title }}" >> $GITHUB_ENV
