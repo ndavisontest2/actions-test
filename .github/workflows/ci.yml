@@ -1,25 +1,28 @@
-name: CI
+name: Dependabot
 on:
-  workflow_dispatch:
-  pull_request:
+  push:
     branches:
-      - main
+      - 'dependabot/**'
+
 jobs:
-  ci:
+  ci-image:
+    name: Changeset
     runs-on: ubuntu-latest
     steps:
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: setup node
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
         with:
-          node-version: v16.17.1
-          cache: yarn
-      - name: setup AWS
-        uses: aws-actions/configure-aws-credentials@v1
+          fetch-depth: 1
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Configure git
+        run: |
+          git config --local user.email "$(git log --pretty='%ae' -1)"
+          git config --local user.name "Dependabot[bot]"
+          git checkout ${{ github.event.pull_request.head.ref }}
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      - name: set $COMMIT_MSG
-        run: echo "COMMIT_MSG=${{ github.event.head_commit.message || github.event.pull_request.title }}" >> $GITHUB_ENV
+          node-version: 16.x
+
+      - name: Install Dependencies
+        run: npm install
