@@ -1,28 +1,15 @@
-name: Dependabot
+name: Pull Request Check
+
 on:
-  push:
-    branches:
-      - 'dependabot/**'
+  pull_request:
+    paths-ignore:
+      - '**.md'
 
 jobs:
-  ci-image:
-    name: Changeset
-    runs-on: ubuntu-latest
+  build:
+    runs-on: self-hosted
     steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 1
-          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: actions/checkout@v2
 
-      - name: Configure git
-        run: |
-          git config --local user.email "$(git log --pretty='%ae' -1)"
-          git config --local user.name "Dependabot[bot]"
-          git checkout ${{ github.event.pull_request.head.ref }}
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16.x
-
-      - name: Install Dependencies
-        run: npm install
+      - name: Check Branch
+        run: ./check_branch_name.sh ${{ github.head_ref }}
