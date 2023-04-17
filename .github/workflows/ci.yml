@@ -1,15 +1,20 @@
-name: Pull Request Check
+name: ci
 
-on:
-  pull_request:
-    paths-ignore:
-      - '**.md'
+on: [push, pull_request_target]
 
+env:
+  MY_SECRET: ${{ secrets.MY_SECRET }}
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Check Branch
-        run: ./check_branch_name.sh ${{ github.head_ref }}
+    - uses: actions/checkout@v2
+      if: ${{ github.event_name != 'pull_request_target' }}
+    - uses: actions/checkout@v2
+      if: ${{ github.event_name == 'pull_request_target' }}
+      with:
+        ref: ${{github.event.pull_request.head.ref}}
+        repository: ${{github.event.pull_request.head.repo.full_name}}
+    - name: Install
+      run: |
+        npm install
