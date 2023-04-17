@@ -1,0 +1,23 @@
+{
+  "name": "test",
+  "version": "1",
+  "scripts": {
+    "bootstrap": "lerna bootstrap && lerna exec npm install",
+    "build": "lerna run build",
+    "test": "jest",
+    "docs": "typedoc --plugin nlfurniss-typedoc-plugin-sourcefile-url --plugin typedoc-plugin-extras --sourcefile-url-prefix 'https://github.com/spruceid/siwe' --favicon ./favicon.svg --out docs packages/siwe/lib/siwe.ts"
+  },
+  "author": "me",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/jest": "^27.0.2",
+    "ethers": "^5.5.1",
+    "jest": "^27.3.1",
+    "lerna": "^5.4.3",
+    "nlfurniss-typedoc-plugin-sourcefile-url": "^2.0.0",
+    "ts-jest": "^27.0.7",
+    "typedoc": "^0.23.12",
+    "typedoc-plugin-extras": "^2.2.1",
+    "typescript": "^4.4.4"
+  }
+}
